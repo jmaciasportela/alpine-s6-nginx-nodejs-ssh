@@ -22,6 +22,14 @@ else
 		cd $BE_DIRECTORY && bower install --allow-root option
 	fi	
 
+	if [ -f "$BE_DIRECTORY/gulpfile.js" ]
+	then
+		echo "Execute BE GULP build-prod"
+		sed -i -e "s@SERVER_API_HOST@$SERVER_API_HOST@" $BE_DIRECTORY/config/prod_config.json
+		sed -i -e "s@SERVER_API_PORT@$SERVER_API_PORT@" $BE_DIRECTORY/config/prod_config.json		
+		cd $BE_DIRECTORY && gulp build-prod
+	fi
+
 	if [ -f "$FE_DIRECTORY/bower.json" ]
 	then
 		echo "Install FE bower dependencies"
@@ -31,14 +39,18 @@ else
 	if [ -f "$FE_DIRECTORY/gulpfile.js" ]
 	then
 		echo "Execute FE GULP build-prod"
+		sed -i -e "s@SERVER_API_URL@$SERVER_API_HOST:$SERVER_API_PORT@" $FE_DIRECTORY/environment_config.json
 		cd $FE_DIRECTORY && gulp build-prod
 	fi
 
 	if [ -f "$BE_DIRECTORY/boot/db_init.js" ]
 	then
 		echo "Init DB"
-		node "$BE_DIRECTORY/boot/db_init.js"
+		node $BE_DIRECTORY/boot/db_init.js
 	fi
+
+	cp /root/be_config.json $BE_DIRECTORY/config.json
+
 
 	touch $FILE
 fi
