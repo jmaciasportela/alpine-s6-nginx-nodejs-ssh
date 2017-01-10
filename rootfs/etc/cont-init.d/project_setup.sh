@@ -25,8 +25,8 @@ else
 	if [ -f "$BE_DIRECTORY/gulpfile.js" ]
 	then
 		echo "Execute BE GULP build-prod"
-		sed -i -e "s@SERVER_API_HOST@$SERVER_API_HOST@" $BE_DIRECTORY/config/prod_config.json
-		sed -i -e "s@SERVER_API_PORT@$SERVER_API_PORT@" $BE_DIRECTORY/config/prod_config.json		
+		#sed -i -e "s@SERVER_API_INT_HOST@$SERVER_API_INT_HOST@" $BE_DIRECTORY/config/prod_config.json
+		sed -i -e "s@SERVER_API_INT_PORT@$SERVER_API_INT_PORT@" $BE_DIRECTORY/config/prod_config.json		
 		cd $BE_DIRECTORY && gulp build-prod
 	fi
 
