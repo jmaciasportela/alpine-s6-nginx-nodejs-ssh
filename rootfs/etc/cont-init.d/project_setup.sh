@@ -1,26 +1,44 @@
 #!/usr/bin/with-contenv bash
 
 FILE="/root/installed"
-DIRECTORY="/opt/nodeapp"
+
+BE_DIRECTORY="/opt/nodeapp"
+FE_DIRECTORY="/var/www/html"
 
 if [ -f "$FILE" ]
 then
 	echo "Container already installed"
 else
 	echo "Clean container."
-	if [ -f "$DIRECTORY/packages.json" ]
+	if [ -f "$BE_DIRECTORY/packages.json" ]
 	then
-  	# Control will enter here if $DIRECTORY exists.
-		echo "Install node dependencies"
-		cd $DIRECTORY && npm install
+		echo "Install BE node dependencies"
+		cd $BE_DIRECTORY && npm install
 	fi
 
-	if [ -f "$DIRECTORY/bower.json" ]
+	if [ -f "$BE_DIRECTORY/bower.json" ]
 	then
-  	# Control will enter here if $DIRECTORY exists.
-		echo "Install bower dependencies"
-		cd $DIRECTORY && bower install --allow-root option
+		echo "Install BE bower dependencies"
+		cd $BE_DIRECTORY && bower install --allow-root option
 	fi	
+
+	if [ -f "$FE_DIRECTORY/bower.json" ]
+	then
+		echo "Install FE bower dependencies"
+		cd $FE_DIRECTORY && bower install --allow-root option
+	fi	
+
+	if [ -f "$FE_DIRECTORY/gulpfile.js" ]
+	then
+		echo "Execute FE GULP build-prod"
+		cd $FE_DIRECTORY && gulp build-prod
+	fi
+
+	if [ -f "$BE_DIRECTORY/boot/db_init.js" ]
+	then
+		echo "Init DB"
+		node "$BE_DIRECTORY/boot/db_init.js"
+	fi
 
 	touch $FILE
 fi
