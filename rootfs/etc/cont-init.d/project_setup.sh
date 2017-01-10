@@ -10,7 +10,7 @@ then
 	echo "Container already installed"
 else
 	echo "Clean container."
-	if [ -f "$BE_DIRECTORY/packages.json" ]
+	if [ -f "$BE_DIRECTORY/package.json" ]
 	then
 		echo "Install BE node dependencies"
 		cd $BE_DIRECTORY && npm install
@@ -19,7 +19,7 @@ else
 	if [ -f "$BE_DIRECTORY/bower.json" ]
 	then
 		echo "Install BE bower dependencies"
-		cd $BE_DIRECTORY && bower install --allow-root option
+		cd $BE_DIRECTORY && bower install --allow-root
 	fi	
 
 	if [ -f "$BE_DIRECTORY/gulpfile.js" ]
@@ -27,13 +27,19 @@ else
 		echo "Execute BE GULP build-prod"
 		#sed -i -e "s@SERVER_API_INT_HOST@$SERVER_API_INT_HOST@" $BE_DIRECTORY/config/prod_config.json
 		sed -i -e "s@SERVER_API_INT_PORT@$SERVER_API_INT_PORT@" $BE_DIRECTORY/config/prod_config.json		
-		cd $BE_DIRECTORY && gulp build-prod
+		cd $BE_DIRECTORY && npm link gulp && gulp build-prod
+	fi
+
+	if [ -f "$FE_DIRECTORY/package.json" ]
+	then
+		echo "Install FE node dependencies"
+		cd $FE_DIRECTORY && npm install
 	fi
 
 	if [ -f "$FE_DIRECTORY/bower.json" ]
 	then
 		echo "Install FE bower dependencies"
-		cd $FE_DIRECTORY && bower install --allow-root option
+		cd $FE_DIRECTORY && bower install --allow-root
 	fi	
 
 	if [ -f "$FE_DIRECTORY/gulpfile.js" ]

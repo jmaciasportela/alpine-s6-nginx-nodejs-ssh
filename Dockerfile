@@ -18,7 +18,7 @@ RUN curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v
 RUN mkdir -p /opt/nodeapp
 
 #Instal packages
-RUN apk add nginx bash git openssh rsync pwgen netcat-openbsd
+RUN apk add nginx bash git openssh rsync pwgen netcat-openbsd python vips vips-dev make gcc g++ libc6-compat
 
 #Generate Host ssh Keys
 RUN mkdir -p ~root/.ssh && chmod 700 ~root/.ssh/ && \
