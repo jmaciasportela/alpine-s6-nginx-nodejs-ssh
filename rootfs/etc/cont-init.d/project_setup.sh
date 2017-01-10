@@ -54,9 +54,6 @@ else
 		echo "Init DB"
 		node $BE_DIRECTORY/boot/db_init.js
 	fi
-
-	cp /root/be_config.json $BE_DIRECTORY/config.json
-
-
+	
 	touch $FILE
 fi
